@@ -2,6 +2,8 @@ import { BsGraphDown } from "react-icons/bs";
 import { FaRegBookmark, FaRegUser } from "react-icons/fa";
 import { MdOutlineSpeaker } from "react-icons/md";
 import { Link, Route, Routes } from "react-router-dom";
+import AddItemPage from "./addItemsPage";
+import UpdateItemPage from "./updateItemPage";
 
 export default function AdminPage() {
   return (
@@ -34,6 +36,8 @@ export default function AdminPage() {
         <Routes path="/*">
           <Route path="/bookings" element={<h1>Booking</h1>} />
           <Route path="/items" element={<h1>Items</h1>} />
+          <Route path="/items/add" element={<AddItemPage/>}/>
+          <Route path="/items/edit" element={<UpdateItemPage/>}/>
         </Routes>
       </div>
     </div>
