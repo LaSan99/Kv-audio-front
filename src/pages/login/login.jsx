@@ -9,103 +9,92 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function handleOnSubmit(e) {
+  async function handleLogin(e) {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:3000/api/users/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/users/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
 
-      toast.success("Login Success");
-      localStorage.setItem("token", res.data.token);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
 
-      const user = res.data.user;
-      if (user.role === "admin") {
+      // Decode JWT token to get user role
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const decodedToken = JSON.parse(window.atob(base64));
+
+      toast.success("Login successful!");
+
+      // Check user role from decoded token
+      if (decodedToken.role === "admin") {
         navigate("/admin/");
       } else {
         navigate("/");
       }
-    } catch (err) {
-      console.error(err);
-      toast.error(err.response?.data?.error || "An error occurred during login.");
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      toast.error("Login failed. Please check your email and password.");
     }
+
+    setIsLoading(false);
   }
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 to-purple-600 w-full h-screen flex justify-center items-center">
-      <form onSubmit={handleOnSubmit} className="w-full max-w-md">
-        <div className="bg-white bg-opacity-80 rounded-3xl shadow-2xl p-8 flex flex-col items-center z-10">
-          <img
-            src="/logo.png"
-            alt="logo"
-            className="w-24 h-24 object-cover animate-bounce"
-          />
+    <div className="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen flex items-center justify-center">
+      <div className="bg-white rounded-lg shadow-lg p-8 w-96">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png"
+          alt="logo"
+          className="w-20 h-20 mx-auto mb-4"
+        />
 
-          <h1 className="text-3xl font-bold text-gray-800 mt-4">Welcome Back!</h1>
-          <p className="text-gray-600 mb-6">Please login to continue</p>
+        <h1 className="text-2xl font-bold text-center mb-6">Welcome Back!</h1>
 
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full px-4 py-2 mb-4 bg-transparent border-2 border-gray-300 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:border-yellow-300 transition-all"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full p-2 border rounded"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full px-4 py-2 mb-6 bg-transparent border-2 border-gray-300 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:border-yellow-300 transition-all"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="mb-6">
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full p-2 border rounded"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 bg-yellow-400 text-white text-xl font-semibold rounded-lg hover:bg-yellow-500 transition-all flex items-center justify-center"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           >
-            {isLoading ? (
-              <svg
-                className="animate-spin h-6 w-6 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-            ) : (
-              "Login"
-            )}
+            {isLoading ? "Logging in..." : "Login"}
           </button>
+        </form>
 
-          <p className="text-gray-600 mt-4">
-            Don't have an account?{" "}
-            <a href="/signup" className="text-yellow-500 hover:underline">
-              Sign Up
-            </a>
-          </p>
-        </div>
-      </form>
+        <p className="text-center mt-4">
+          Don't have an account?{" "}
+          <a href="/signup" className="text-blue-500 hover:underline">
+            Sign Up
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
