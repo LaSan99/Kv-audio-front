@@ -9,40 +9,34 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function handleLogin(e) {
-    e.preventDefault();
-    setIsLoading(true);
+  function handleOnSubmit(e){
+    e.preventDefault()
+    console.log(email , password)
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/users/login",
-        {
-          email: email,
-          password: password,
-        }
-      );
-
-      const token = response.data.token;
-      localStorage.setItem("token", token);
-
-      // Decode JWT token to get user role
-      const base64Url = token.split(".")[1];
-      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      const decodedToken = JSON.parse(window.atob(base64));
-
-      toast.success("Login successful!");
-
-      // Check user role from decoded token
-      if (decodedToken.role === "admin") {
-        navigate("/admin/");
-      } else {
-        navigate("/");
+    axios.post("http://localhost:3000/api/users/login",
+      {
+        email : email,
+        password : password
       }
-    } catch (error) {
-      toast.error("Login failed. Please check your email and password.");
-    }
+    ).then((res)=>{
 
-    setIsLoading(false);
+      console.log(res)
+      toast.success("Login Success")
+      const user = res.data.user
+      localStorage.setItem("token",res.data.token)
+      
+      if(user.role === "admin"){
+        navigate("/admin/")
+      }else{
+        navigate("/")
+      }
+      
+
+    }).catch((err)=>{
+      console.log(err)
+      toast.error(err.response.data.error)
+    })
+
   }
 
   return (
@@ -56,7 +50,7 @@ export default function LoginPage() {
 
         <h1 className="text-2xl font-bold text-center mb-6">Welcome Back!</h1>
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleOnSubmit}>
           <div className="mb-4">
             <input
               type="email"
