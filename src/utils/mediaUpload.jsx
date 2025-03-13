@@ -1,3 +1,6 @@
+
+//install package npm install @supabase/supabase-js
+
 import { createClient } from "@supabase/supabase-js";
 
 const anon_key =
