@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <div className="h-[clac(100vh-100px)] w-full ">
+      <div className="w-full h-screen bg-white pt-[75px] flex flex-col items-center ">
       <Routes path="/*">
           <Route path="/contact" element={<Contact/>}/>
           <Route path="/gallery" element={<Gallery/>}/>

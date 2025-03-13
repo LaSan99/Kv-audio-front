@@ -4,7 +4,7 @@ import BookingItem from "../../components/bookingItem";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export default function BookingPage(){
+export default function BookingPage() {
     const [cart, setCart] = useState(loadCart());
     const [startingDate, setStartingDate] = useState(formatDate(new Date()));
     const [endingDate, setEndingDate] = useState(formatDate(new Date(Date.now() + 24 * 60 * 60 * 1000)));
@@ -57,43 +57,74 @@ export default function BookingPage(){
         })
     }
 
-    return(
-        <div className="w-full h-full flex flex-col items-center ">
-            <h1 className="text-2xl font-bold text-accent">Create Booking</h1>
-            <div className="w-full flex flex-col items-center gap-4 mt-4">
-                <label className="flex flex-col">
-                    <span className="text-accent font-semibold">Starting Date:</span>
-                    <input 
-                        type="date" 
-                        value={startingDate} 
-                        onChange={(e) => setStartingDate(e.target.value)} 
-                        className="border border-secondary rounded-md p-2" 
-                    />
-                </label>
-                <label className="flex flex-col">
-                    <span className="text-accent font-semibold">Ending Date:</span>
-                    <input 
-                        type="date" 
-                        value={endingDate} 
-                        onChange={(e) => setEndingDate(e.target.value)} 
-                        className="border border-secondary rounded-md p-2" 
-                    />
-                </label>
-                <p className="text-accent font-medium">Total Days: {daysBetween}</p>
-            </div>
-            <div className="w-full flex flex-col items-center mt-4">
-                {
-                    cart.orderedItems.map((item)=>{
-                        return <BookingItem itemKey={item.key} key={item.key} qty={item.qty} refresh={reloadCart}/>
-                    })
-                }
-            </div>
-            <div className="w-full flex justify-center mt-4">
-                <p className="text-accent font-semibold">Total: {total.toFixed(2)}</p>
-            </div>
-            <div className="w-full flex justify-center mt-4">
-                <button className="bg-accent text-white px-4 py-2 rounded-md" onClick={handleBookingCreation}>Create Booking</button>
+    return (
+        <div className="min-h-screen bg-gray-50 py-8 px-4">
+            <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
+                <h1 className="text-3xl font-bold text-accent text-center mb-8">
+                    Create Your Booking
+                </h1>
+
+                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                    <div className="bg-gray-50 p-6 rounded-lg">
+                        <label className="block">
+                            <span className="text-accent font-semibold block mb-2">Starting Date</span>
+                            <input 
+                                type="date" 
+                                value={startingDate} 
+                                onChange={(e) => setStartingDate(e.target.value)} 
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all" 
+                            />
+                        </label>
+                    </div>
+
+                    <div className="bg-gray-50 p-6 rounded-lg">
+                        <label className="block">
+                            <span className="text-accent font-semibold block mb-2">Ending Date</span>
+                            <input 
+                                type="date" 
+                                value={endingDate} 
+                                onChange={(e) => setEndingDate(e.target.value)} 
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all" 
+                            />
+                        </label>
+                    </div>
+                </div>
+
+                <div className="bg-accent/5 rounded-lg p-4 mb-8">
+                    <p className="text-accent font-medium text-center text-lg">
+                        Duration: {daysBetween} {daysBetween === 1 ? 'day' : 'days'}
+                    </p>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                    {cart.orderedItems.map((item) => (
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 relative" key={item.key}>
+                            <BookingItem itemKey={item.key} qty={item.qty} refresh={reloadCart}/>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="border-t border-gray-200 pt-6 mt-8">
+                    <div className="flex justify-between items-center mb-6">
+                        <p className="text-xl font-semibold text-gray-700">Total Amount:</p>
+                        <p className="text-2xl font-bold text-accent">Rs. {total.toFixed(2)}</p>
+                    </div>
+
+                    <div className="flex justify-center">
+                        <button 
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg
+                                font-semibold transition-all duration-200 transform hover:scale-105
+                                flex items-center gap-2 shadow-lg hover:shadow-emerald-200"
+                            onClick={handleBookingCreation}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                            </svg>
+                            Confirm Booking
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    )
+    );
 }

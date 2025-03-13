@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { FaUser, FaEnvelope, FaLock, FaMapMarkerAlt, FaPhone } from "react-icons/fa";
 
 export default function RegisterPage() {
   const [firstName, setFirstName] = useState("");
@@ -10,82 +11,152 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/`, {
-      email,
-      firstName,
-      lastName,
-      password,
-      address,
-      phone,
-    })
-    .then(() => {
-      toast.success("Registration Success");
-      navigate("/login");
-    })
-    .catch((err) => {
-      toast.error(err?.response?.data?.error || "An error occurred");
-    });
+    setIsLoading(true);
+
+    axios
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/users/`, {
+        email,
+        firstName,
+        lastName,
+        password,
+        address,
+        phone,
+      })
+      .then(() => {
+        toast.success("Registration Success");
+        navigate("/login");
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.error || "Registration failed");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
-    <div className="bg-cover bg-center w-full h-screen flex justify-center items-center bg-[url('/path/to/your/background.jpg')]">
-      <form onSubmit={handleOnSubmit} className="bg-white bg-opacity-90 backdrop-blur-md rounded-2xl shadow-lg p-8 w-96">
-        <img
-          src="/logo.png"
-          alt="logo"
-          className="w-24 h-24 object-cover mb-6 mx-auto"
-        />
-        <h2 className="text-2xl font-bold text-center mb-6">Create an Account</h2>
-        <input
-          type="text"
-          placeholder="First Name"
-          className="input-field mb-4 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#efac38]"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          className="input-field mb-4 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#efac38]"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          className="input-field mb-4 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#efac38]"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="input-field mb-4 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#efac38]"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          className="input-field mb-4 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#efac38]"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Phone"
-          className="input-field mb-4 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#efac38]"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-        <button className="my-4 w-full h-12 bg-[#efac38] text-2xl text-white rounded-lg hover:bg-[#d89a2e] transition duration-200">
-          Register
-        </button>
-      </form>
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 transform transition-all duration-300 hover:scale-[1.02]">
+        <div className="text-center mb-8">
+          <img
+            src="/logo.png"
+            alt="logo"
+            className="w-24 h-24 mx-auto mb-4 rounded-full shadow-lg transform transition-transform duration-500 hover:rotate-6"
+          />
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Create Account
+          </h1>
+          <p className="text-gray-500 mt-2">Join our community today</p>
+        </div>
+
+        <form onSubmit={handleOnSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="relative">
+              <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="First Name"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="relative">
+              <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Last Name"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="relative">
+            <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Address"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="tel"
+              placeholder="Phone"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+          >
+            {isLoading ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Creating Account...
+              </span>
+            ) : (
+              "Create Account"
+            )}
+          </button>
+        </form>
+
+        <p className="text-center mt-8 text-gray-600">
+          Already have an account?{" "}
+          <a
+            href="/login"
+            className="font-semibold text-purple-600 hover:text-purple-800 transition-colors duration-300"
+          >
+            Sign In
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
