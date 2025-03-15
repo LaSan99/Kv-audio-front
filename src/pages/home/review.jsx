@@ -148,7 +148,7 @@ const Review = () => {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="bg-yellow text-black px-10 py-4 rounded-lg hover:bg-accent/90 transition duration-200 font-semibold text-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                className="bg-blue-500 text-white px-10 py-4 rounded-lg hover:bg-blue-600 transition duration-200 font-semibold text-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               >
                 Submit Review
               </button>
