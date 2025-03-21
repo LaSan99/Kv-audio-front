@@ -1,5 +1,5 @@
 import { BsGraphDown } from "react-icons/bs";
-import { FaRegBookmark, FaRegUser, FaSignOutAlt } from "react-icons/fa";
+import { FaEnvelope, FaRegBookmark, FaRegUser, FaSignOutAlt } from "react-icons/fa";
 import { MdOutlineSpeaker } from "react-icons/md";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import AdminItemsPage from "./adminItemsPage";
@@ -10,6 +10,7 @@ import AdminOrdersPage from "./adminBookingPage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import AdminInquiryPage from "./adminInquiryPage";
 
 export default function AdminPage() {
   const [userValidated, setUserValidated] = useState(false);
@@ -64,6 +65,7 @@ export default function AdminPage() {
     { path: "/admin/orders", icon: <FaRegBookmark />, label: "Orders" },
     { path: "/admin/items", icon: <MdOutlineSpeaker />, label: "Items" },
     { path: "/admin/users", icon: <FaRegUser />, label: "Users" },
+    { path: "/admin/inquiries", icon: <FaEnvelope />, label: "Inquiries" },
   ];
 
   return (
@@ -110,6 +112,7 @@ export default function AdminPage() {
             <Route path="/orders" element={<AdminOrdersPage />} />
             <Route path="/users" element={<AdminUsersPage />} />
             <Route path="/items" element={<AdminItemsPage />} />
+            <Route path="/inquiries" element={<AdminInquiryPage />} />
             <Route path="/items/add" element={<AddItemPage />} />
             <Route path="/items/edit" element={<UpdateItemPage />} />
           </Routes>

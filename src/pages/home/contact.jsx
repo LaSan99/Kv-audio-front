@@ -1,7 +1,51 @@
 import { Link } from "react-router-dom";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaStar } from "react-icons/fa";
+import { useState } from "react";
 
 export default function Contact() {
+    const [formData, setFormData] = useState({
+        message: ''
+    });
+    const [status, setStatus] = useState('');
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus('sending');
+        
+        try {
+            const response = await fetch('http://localhost:3000/api/inquiries', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Add auth token
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setStatus('success');
+                setFormData({ message: '' });
+            } else {
+                if (response.status === 403) {
+                    setStatus('unauthorized');
+                } else {
+                    setStatus('error');
+                }
+            }
+        } catch (error) {
+            setStatus('error');
+        }
+    };
+
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="max-w-6xl mx-auto">
@@ -55,38 +99,44 @@ export default function Contact() {
                     {/* Contact Form */}
                     <div className="bg-white p-8 rounded-lg shadow-lg">
                         <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
-                        <form className="space-y-4">
-                            <div>
-                                <label className="block text-gray-700 mb-2">Name</label>
-                                <input 
-                                    type="text" 
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                    placeholder="Your Name"
-                                />
+                        {status === 'unauthorized' ? (
+                            <div className="text-center">
+                                <p className="text-red-600 mb-4">Please log in to send us a message</p>
+                                <Link to="/login" className="bg-accent text-black py-2 px-4 rounded-md hover:bg-accent/80 transition duration-300">
+                                    Login
+                                </Link>
                             </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">Email</label>
-                                <input 
-                                    type="email" 
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                    placeholder="Your Email"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">Message</label>
-                                <textarea 
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                    rows="4"
-                                    placeholder="Your Message"
-                                ></textarea>
-                            </div>
-                            <button 
-                                type="submit" 
-                                className="w-full bg-accent text-black py-2 px-4 rounded-md hover:bg-accent/80 transition duration-300"
-                            >
-                                Send Message
-                            </button>
-                        </form>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div>
+                                    <label className="block text-gray-700 mb-2">Message</label>
+                                    <textarea 
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
+                                        rows="4"
+                                        placeholder="Your Message"
+                                        required
+                                    ></textarea>
+                                </div>
+                                
+                                {status === 'success' && (
+                                    <div className="text-green-600 text-sm">Message sent successfully!</div>
+                                )}
+                                {status === 'error' && (
+                                    <div className="text-red-600 text-sm">Failed to send message. Please try again.</div>
+                                )}
+                                
+                                <button 
+                                    type="submit" 
+                                    className="w-full bg-accent text-black py-2 px-4 rounded-md hover:bg-accent/80 transition duration-300 disabled:opacity-50"
+                                    disabled={status === 'sending'}
+                                >
+                                    {status === 'sending' ? 'Sending...' : 'Send Message'}
+                                </button>
+                            </form>
+                        )}
                     </div>
                 </div>
 
