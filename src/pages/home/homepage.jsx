@@ -8,13 +8,15 @@ import ErrorNotFound from "./error";
 import ProductOverview from "./productOverview";
 import BookingPage from "./bookingPage";
 import Review from "./review";
-import Footer from "../../components/footer"
+import Footer from "../../components/Footernew";
+import UserProfile from '../../pages/profile/UserProfile';
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
     <>
       <Header />
-      <div className="w-full min-h-screen bg-white pt-[75px] pb-8 flex flex-col">
+      <div className="w-full min-h-screen bg-white pb-8 flex flex-col">
         <div className="flex-grow">
           <Routes path="/*">
             <Route path="/contact" element={<Contact />} />
@@ -24,6 +26,7 @@ export default function HomePage() {
             <Route path="/review" element={<Review />} />
             <Route path="/product/:key" element={<ProductOverview />} />
             <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<UserProfile />} />
             <Route path="/*" element={<ErrorNotFound />} />
           </Routes>
         </div>

@@ -1,100 +1,160 @@
 import { useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
+import { UserIcon, SearchIcon, XIcon } from "lucide-react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from "react-router-dom";
-import MobileNavPanel from "./mobileNavPanel";
 
 export default function Header() {
-	const [navPanelOpen, setNavPanelOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const token = localStorage.getItem("token");
 
 	return (
-		<header className="w-full h-[75px] bg-white text-black shadow-lg fixed top-0 z-50 transition-all duration-300">
-			<div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between relative">
-				{/* Logo Section */}
-				<Link to="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity">
-					<img
-						src="/logo.png"
-						alt="logo"
-						className="w-[55px] h-[55px] object-cover border-2 border-white/30 rounded-full hover:border-white transition-all duration-300 shadow-md"
-					/>
-				</Link>
+		<header className="bg-white shadow-sm sticky top-0 z-50">
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="flex justify-between items-center py-4">
+					{/* Logo Section */}
+					<div className="flex items-center">
+						<Link to="/" className="flex-shrink-0 flex items-center space-x-3">
+							<img
+								src="/logo.png"
+								alt="logo"
+								className="w-[45px] h-[45px] object-cover rounded-full"
+							/>
+							<span className="text-2xl font-bold text-indigo-600">AudioRent</span>
+						</Link>
 
-				{/* Desktop Navigation */}
-				<nav className="hidden md:flex items-center space-x-8">
-					<Link to="/" className="nav-link">
-						Home
-					</Link>
-					<Link to="/contact" className="nav-link">
-						Contact
-					</Link>
-					<Link to="/gallery" className="nav-link">
-						Gallery
-					</Link>
-					<Link to="/items" className="nav-link">
-						Items
-					</Link>
-				</nav>
+						{/* Desktop Navigation */}
+						<nav className="hidden md:ml-10 md:flex md:space-x-8">
+							<Link to="/" className="text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium">
+								Home
+							</Link>
+							<Link to="/items" className="text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium">
+								Equipment
+							</Link>
+							<Link to="/gallery" className="text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium">
+								Gallery
+							</Link>
+							<Link to="/contact" className="text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium">
+								Contact
+							</Link>
+						</nav>
+					</div>
 
-				{/* Right Section - Cart & Auth */}
-				<div className="hidden md:flex items-center space-x-6">
-					<Link
-						to="/booking"
-						className="flex items-center space-x-2 hover:text-white/80 transition-colors duration-200"
-					>
-						<FaCartShopping className="text-2xl hover:scale-110 transition-transform" />
-					</Link>
-					{token && (
-						<button
-							className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 text-sm font-medium"
-							onClick={() => {
-								localStorage.removeItem("token");
-								window.location.href = "/login";
-							}}
-						>
-							Logout
+					{/* Desktop Right Section */}
+					<div className="hidden md:flex items-center space-x-4">
+						<button className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+							<SearchIcon className="h-6 w-6" />
 						</button>
-					)}
-				</div>
+						{token ? (
+							<>
+								<Link to="/profile" className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+									<UserIcon className="h-6 w-6" />
+								</Link>
+								<Link to="/booking" className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+									<FaCartShopping className="h-6 w-6" />
+								</Link>
+								<button
+									onClick={() => {
+										localStorage.removeItem("token");
+										window.location.href = "/login";
+									}}
+									className="ml-4 px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
+								>
+									Logout
+								</button>
+							</>
+						) : (
+							<Link to="/login" className="ml-4 px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
+								Login
+							</Link>
+						)}
+					</div>
 
-				{/* Mobile Menu Button */}
-				<button
-					className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
-					onClick={() => setNavPanelOpen(true)}
-				>
-					<GiHamburgerMenu className="text-2xl" />
-				</button>
+					{/* Mobile Menu Button */}
+					<div className="md:hidden flex items-center">
+						<button
+							onClick={() => setIsMenuOpen(!isMenuOpen)}
+							className="p-2 rounded-md text-gray-500 hover:text-indigo-600 focus:outline-none"
+						>
+							{isMenuOpen ? (
+								<XIcon className="h-6 w-6" />
+							) : (
+								<GiHamburgerMenu className="h-6 w-6" />
+							)}
+						</button>
+					</div>
+				</div>
 			</div>
 
 			{/* Mobile Navigation Panel */}
-			<MobileNavPanel isOpen={navPanelOpen} setOpen={setNavPanelOpen} />
-
-			{/* Add global styles */}
-			<style>{`
-				.nav-link {
-					position: relative;
-					font-size: 1.1rem;
-					padding: 0.5rem;
-					transition: all 0.2s;
-				}
-				.nav-link::after {
-					content: '';
-					position: absolute;
-					width: 0;
-					height: 2px;
-					bottom: -2px;
-					left: 50%;
-					background-color: black;
-					transition: all 0.3s ease;
-					transform: translateX(-50%);
-				}
-				.nav-link:hover::after {
-					width: 100%;
-				}
-				.nav-link:hover {
-					opacity: 0.9;
-				}
-			`}</style>
+			{isMenuOpen && (
+				<div className="md:hidden">
+					<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+						<Link
+							to="/"
+							className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-indigo-600 hover:bg-gray-50"
+						>
+							Home
+						</Link>
+						<Link
+							to="/items"
+							className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
+						>
+							Equipment
+						</Link>
+						<Link
+							to="/gallery"
+							className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
+						>
+							Gallery
+						</Link>
+						<Link
+							to="/contact"
+							className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
+						>
+							Contact
+						</Link>
+						{token && (
+							<Link
+								to="/profile"
+								className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
+							>
+								Profile
+							</Link>
+						)}
+						<div className="mt-4 flex items-center justify-between">
+							{token ? (
+								<>
+									<button
+										onClick={() => {
+											localStorage.removeItem("token");
+											window.location.href = "/login";
+										}}
+										className="px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
+									>
+										Logout
+									</button>
+									<div className="flex space-x-4">
+										<button className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+											<SearchIcon className="h-6 w-6" />
+										</button>
+										<Link to="/profile" className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+											<UserIcon className="h-6 w-6" />
+										</Link>
+										<Link to="/booking" className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+											<FaCartShopping className="h-6 w-6" />
+										</Link>
+									</div>
+								</>
+							) : (
+								<Link to="/login" className="px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
+									Login
+								</Link>
+							)}
+						</div>
+					</div>
+				</div>
+			)}
 		</header>
 	);
 }
