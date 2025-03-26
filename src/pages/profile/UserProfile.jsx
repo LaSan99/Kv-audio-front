@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import { FaUser, FaPhone, FaMapMarkerAlt, FaEdit } from 'react-icons/fa';
+import { FaUser, FaPhone, FaMapMarkerAlt, FaEdit, FaQuestionCircle } from 'react-icons/fa';
 import BookingCard from './BookingCard';
+import InquiryCard from './InquiryCard';
+import axios from 'axios';
 
 export default function UserProfile() {
     const [profile, setProfile] = useState(null);
     const [bookings, setBookings] = useState([]);
+    const [inquiries, setInquiries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [activeTab, setActiveTab] = useState('bookings'); // 'bookings' or 'inquiries'
     const [editForm, setEditForm] = useState({
         firstName: '',
         lastName: '',
@@ -16,14 +20,15 @@ export default function UserProfile() {
         profilePicture: ''
     });
 
-    // Fetch user profile and bookings
+    // Fetch user profile, bookings, and inquiries
     useEffect(() => {
         fetchUserProfile();
+        fetchUserInquiries();
     }, []);
 
     const fetchUserProfile = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/users/profile', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/profile`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -50,10 +55,27 @@ export default function UserProfile() {
         }
     };
 
+    const fetchUserInquiries = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/inquiries`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (response.data) {
+                console.log('Inquiries data:', response.data);
+                setInquiries(response.data);
+            }
+        } catch (error) {
+            console.error('Failed to fetch inquiries:', error);
+        }
+    };
+
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3000/api/users/profile', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -190,19 +212,57 @@ export default function UserProfile() {
                     )}
                 </div>
 
-                {/* Bookings Section */}
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-6">Recent Bookings</h2>
-                    <div className="space-y-4">
-                        {bookings.length === 0 ? (
-                            <p className="text-gray-600 text-center py-4">No bookings found</p>
-                        ) : (
-                            bookings.map((booking) => (
-                                <BookingCard key={booking.orderId} booking={booking} />
-                            ))
-                        )}
-                    </div>
+                {/* Tabs Navigation */}
+                <div className="flex border-b mb-6">
+                    <button
+                        className={`px-6 py-3 font-medium ${activeTab === 'bookings' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}
+                        onClick={() => setActiveTab('bookings')}
+                    >
+                        Bookings
+                    </button>
+                    <button
+                        className={`px-6 py-3 font-medium ${activeTab === 'inquiries' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}
+                        onClick={() => setActiveTab('inquiries')}
+                    >
+                        My Inquiries
+                    </button>
                 </div>
+
+                {/* Bookings Section */}
+                {activeTab === 'bookings' && (
+                    <div className="bg-white rounded-lg shadow-lg p-6">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                            Recent Bookings
+                        </h2>
+                        <div className="space-y-4">
+                            {bookings.length === 0 ? (
+                                <p className="text-gray-600 text-center py-4">No bookings found</p>
+                            ) : (
+                                bookings.map((booking) => (
+                                    <BookingCard key={booking.orderId} booking={booking} />
+                                ))
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* Inquiries Section */}
+                {activeTab === 'inquiries' && (
+                    <div className="bg-white rounded-lg shadow-lg p-6">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                            <FaQuestionCircle className="text-indigo-500" /> My Inquiries
+                        </h2>
+                        <div className="space-y-6">
+                            {inquiries.length === 0 ? (
+                                <p className="text-gray-600 text-center py-4">No inquiries found</p>
+                            ) : (
+                                inquiries.map((inquiry) => (
+                                    <InquiryCard key={inquiry.id} inquiry={inquiry} />
+                                ))
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

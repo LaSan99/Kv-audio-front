@@ -1,54 +1,87 @@
 import { Link } from "react-router-dom";
-import { FaTag, FaRuler, FaEye } from "react-icons/fa";
+import { FaTag, FaRuler, FaEye, FaShoppingCart } from "react-icons/fa";
 
 export default function ProductCard({ item }) {
+  // Format price with commas for thousands
+  const formatPrice = (price) => {
+    return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
-    <div className="w-[300px] bg-white rounded-xl shadow-lg overflow-hidden m-4 relative transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-      <div className="relative overflow-hidden group">
+    <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
+      {/* Image Container */}
+      <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={item.image[0]}
           alt={item.name}
-          className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-start p-4">
-          <span className="text-white font-medium text-sm">Click for details</span>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-4 left-4 right-4">
+            <Link 
+              to={"/product/"+item.key}
+              className="w-full flex items-center justify-center gap-2 bg-white/90 backdrop-blur-sm text-gray-800 py-2 rounded-lg font-medium transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300"
+            >
+              <FaEye className="text-blue-600" />
+              <span>View Details</span>
+            </Link>
+          </div>
         </div>
-        <div className="absolute top-3 right-3">
-          <div className={`px-3 py-1 text-sm rounded-full font-medium ${
-            item.availability 
-              ? "bg-green-100 text-green-700 border border-green-200" 
-              : "bg-red-100 text-red-700 border border-red-200"
-          }`}>
+        
+        {/* Status Badge */}
+        <div className="absolute top-3 right-3 z-10">
+          <div className={`px-3 py-1 text-sm rounded-full font-medium shadow-sm backdrop-blur-sm
+            ${item.availability 
+              ? "bg-green-500/90 text-white" 
+              : "bg-red-500/90 text-white"
+            }`}
+          >
             {item.availability ? "In Stock" : "Out of Stock"}
           </div>
         </div>
       </div>
-      
-      <div className="p-5">
+
+      {/* Content */}
+      <div className="p-4">
+        {/* Category */}
         <div className="flex items-center mb-2">
-          <FaTag className="text-purple-500 mr-2" />
-          <span className="text-sm font-medium text-purple-600">{item.category}</span>
+          <FaTag className="text-blue-500 mr-2 text-sm" />
+          <span className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+            {item.category}
+          </span>
         </div>
-        
-        <h2 className="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{item.name}</h2>
-        
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{item.description}</p>
-        
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center text-gray-700">
-            <FaRuler className="text-blue-500 mr-2 text-sm" />
-            <span className="text-xs">{item.dimensions}</span>
+
+        {/* Title */}
+        <h2 className="text-lg font-bold text-gray-800 mb-1 line-clamp-1 group-hover:text-blue-600 transition-colors">
+          {item.name}
+        </h2>
+
+        {/* Description */}
+        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+          {item.description}
+        </p>
+
+        {/* Specs */}
+        <div className="flex items-center text-gray-500 mb-4">
+          <FaRuler className="text-blue-500 mr-2 text-sm" />
+          <span className="text-sm">{item.dimensions}</span>
+        </div>
+
+        {/* Price and Action */}
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+          <div>
+            <span className="text-xs text-gray-500 block">Price</span>
+            <span className="text-xl font-bold text-gray-800">
+              Rs. {formatPrice(item.price)}
+            </span>
           </div>
-        </div>
-        
-        <div className="flex justify-between items-center pt-3 border-t border-gray-100">
-          <span className="text-xl font-bold text-green-600">Rs. {item.price?.toFixed(2)}</span>
+          
           <Link 
-            to={"/product/"+item.key} 
-            className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300"
+            to={"/product/"+item.key}
+            className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-300"
           >
-            <FaEye />
-            <span>View</span>
+            <FaShoppingCart className="text-sm" />
+            <span className="font-medium">Buy Now</span>
           </Link>
         </div>
       </div>

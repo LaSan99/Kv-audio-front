@@ -3,6 +3,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { UserIcon, SearchIcon, XIcon } from "lucide-react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from "react-router-dom";
+import headphone from "../assets/headphone.png";
 
 export default function Header() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function Header() {
 					<div className="flex items-center">
 						<Link to="/" className="flex-shrink-0 flex items-center space-x-3">
 							<img
-								src="/logo.png"
+								src={headphone}
 								alt="logo"
 								className="w-[45px] h-[45px] object-cover rounded-full"
 							/>
