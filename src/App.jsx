@@ -1,7 +1,7 @@
 import "./App.css";
 import AdminPage from "./pages/admin/adminPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/home/homePage";
+import HomePage from "./pages/home/homePage.jsx";
 import LoginPage from "./pages/login/login";
 import RegisterPage from "./pages/register/register";
 import { Toaster } from "react-hot-toast";
