@@ -50,6 +50,9 @@ export default function RegisterPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
+            <Link to="/" className="inline-block mb-4 text-blue-600 hover:text-blue-800">
+              ← Back to Home
+            </Link>
             <h1 className="text-2xl font-semibold text-gray-800 mb-2">Create an Account</h1>
             <p className="text-gray-600">Fill in your details to get started</p>
           </div>
