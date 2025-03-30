@@ -4,10 +4,12 @@ import { UserIcon, SearchIcon, XIcon } from "lucide-react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import headphone from "../assets/headphone.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const token = localStorage.getItem("token");
+	const navigate = useNavigate();
 
 	return (
 		<header className="bg-white shadow-sm sticky top-0 z-50">
@@ -57,7 +59,7 @@ export default function Header() {
 								<button
 									onClick={() => {
 										localStorage.removeItem("token");
-										window.location.href = "/login";
+										navigate("/login");
 									}}
 									className="ml-4 px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
 								>
