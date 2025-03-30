@@ -13,12 +13,13 @@ function App() {
     <GoogleOAuthProvider clientId="1004979321065-csae0fqeivgon3ru3t5hl7k53snnlg2g.apps.googleusercontent.com">
 			<BrowserRouter>
 				<Toaster position="top-right" />
-				<Routes path="/*">
+				<Routes>
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/register" element={<RegisterPage />} />
-          			<Route path="/verify-email" element={<VerifyEmail />} />
+					<Route path="/verify-email" element={<VerifyEmail />} />
 					<Route path="/admin/*" element={<AdminPage />} />
-					<Route path="/*" element={<HomePage />} />
+					<Route path="/" element={<HomePage />} />
+					<Route path="*" element={<HomePage />} />
 				</Routes>
 			</BrowserRouter>
 		</GoogleOAuthProvider>
