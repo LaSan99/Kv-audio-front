@@ -12,17 +12,19 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import AdminInquiryPage from "./adminInquiryPage";
 import ReviewManagement from "./reveiwManagement";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminPage() {
   const [userValidated, setUserValidated] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const validateUser = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          window.location.href = "/login";
+          navigate("/login");
           return;
         }
 
@@ -38,13 +40,13 @@ export default function AdminPage() {
           toast.success("Welcome back, Admin!");
         } else {
           toast.error("Unauthorized access");
-          window.location.href = "/";
+          navigate("/");
         }
       } catch (error) {
         console.error(error);
         toast.error("Authentication failed");
         setUserValidated(false);
-        window.location.href = "/login";
+        navigate("/login");
       }
     };
 
@@ -54,7 +56,7 @@ export default function AdminPage() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     toast.success("Logged out successfully");
-    window.location.href = "/login";
+    navigate("/login");
   };
 
   const isActiveRoute = (path) => {
