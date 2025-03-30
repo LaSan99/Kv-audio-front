@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FaGoogle } from "react-icons/fa";
 
@@ -133,9 +133,9 @@ export default function LoginPage() {
 
           <p className="text-center mt-8 text-gray-600">
             Don't have an account?{" "}
-            <a href="/register" className="text-blue-600 hover:text-blue-800 font-medium">
+            <Link to="/register" className="text-blue-600 hover:text-blue-800 font-medium">
               Sign Up
-            </a>
+            </Link>
           </p>
         </div>
       </div>
