@@ -131,7 +131,7 @@ export default function Header() {
 									<button
 										onClick={() => {
 											localStorage.removeItem("token");
-											window.location.href = "/login";
+											navigate("/login");
 										}}
 										className="px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
 									>

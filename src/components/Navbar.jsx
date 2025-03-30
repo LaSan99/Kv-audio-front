@@ -6,6 +6,8 @@ import {
   UserIcon,
   SearchIcon,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
+
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   return (
@@ -14,56 +16,56 @@ export const Navbar = () => {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <span className="text-2xl font-bold text-indigo-600">
+              <Link to="/" className="text-2xl font-bold text-indigo-600">
                 AudioRent
-              </span>
+              </Link>
             </div>
             <nav className="hidden md:ml-10 md:flex md:space-x-8">
-              <a
-                href="#"
+              <Link
+                to="/"
                 className="text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium"
               >
                 Home
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/items"
                 className="text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium"
               >
                 Equipment
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/about"
                 className="text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium"
               >
                 How It Works
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/pricing"
                 className="text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium"
               >
                 Pricing
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/contact"
                 className="text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium"
               >
                 Contact
-              </a>
+              </Link>
             </nav>
           </div>
           <div className="hidden md:flex items-center space-x-4">
             <button className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
               <SearchIcon className="h-6 w-6" />
             </button>
-            <button className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+            <Link to="/profile" className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
               <UserIcon className="h-6 w-6" />
-            </button>
-            <button className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+            </Link>
+            <Link to="/cart" className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
               <ShoppingCartIcon className="h-6 w-6" />
-            </button>
-            <button className="ml-4 px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
+            </Link>
+            <Link to="/rent" className="ml-4 px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
               Rent Now
-            </button>
+            </Link>
           </div>
           <div className="md:hidden flex items-center">
             <button
@@ -83,50 +85,50 @@ export const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 bg-gray-50"
             >
               Home
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/items"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
             >
               Equipment
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/about"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
             >
               How It Works
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/pricing"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
             >
               Pricing
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/contact"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50"
             >
               Contact
-            </a>
+            </Link>
             <div className="mt-4 flex items-center justify-between">
-              <button className="px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
+              <Link to="/rent" className="px-4 py-2 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
                 Rent Now
-              </button>
+              </Link>
               <div className="flex space-x-4">
                 <button className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
                   <SearchIcon className="h-6 w-6" />
                 </button>
-                <button className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+                <Link to="/profile" className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
                   <UserIcon className="h-6 w-6" />
-                </button>
-                <button className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
+                </Link>
+                <Link to="/cart" className="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none">
                   <ShoppingCartIcon className="h-6 w-6" />
-                </button>
+                </Link>
               </div>
             </div>
           </div>

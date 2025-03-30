@@ -9,7 +9,9 @@ import {
   MapPin,
   Clock,
 } from 'lucide-react'
- const Footer = () => {
+import { Link } from 'react-router-dom'
+
+const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -53,52 +55,52 @@ import {
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/items"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Browse Equipment
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/about"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   How It Works
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/pricing"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Pricing
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/faq"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   FAQs
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/contact"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Contact Us
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -188,15 +190,15 @@ import {
             &copy; {new Date().getFullYear()} AudioRent. All rights reserved.
           </p>
           <div className="flex justify-center space-x-6 mt-4">
-            <a href="#" className="hover:text-gray-300">
+            <Link to="/privacy" className="hover:text-gray-300">
               Privacy Policy
-            </a>
-            <a href="#" className="hover:text-gray-300">
+            </Link>
+            <Link to="/terms" className="hover:text-gray-300">
               Terms of Service
-            </a>
-            <a href="#" className="hover:text-gray-300">
+            </Link>
+            <Link to="/cookies" className="hover:text-gray-300">
               Cookie Policy
-            </a>
+            </Link>
           </div>
         </div>
       </div>
