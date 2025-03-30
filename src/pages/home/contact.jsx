@@ -20,7 +20,7 @@ export default function Contact() {
         setStatus('sending');
         
         try {
-            const response = await fetch('http://localhost:3000/api/inquiries', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/inquiries`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

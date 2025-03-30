@@ -15,7 +15,7 @@ export default function AdminInquiryPage() {
 
     const fetchInquiries = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/inquiries', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/inquiries`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -39,7 +39,7 @@ export default function AdminInquiryPage() {
         if (!window.confirm('Are you sure you want to delete this inquiry?')) return;
 
         try {
-            const response = await fetch(`http://localhost:3000/api/inquiries/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/inquiries/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -59,7 +59,7 @@ export default function AdminInquiryPage() {
     // Update inquiry with response
     const handleRespond = async (id) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/inquiries/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/inquiries/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
