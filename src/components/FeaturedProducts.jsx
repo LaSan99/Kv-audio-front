@@ -2,6 +2,23 @@ import React, { useState, useEffect } from 'react'
 import { StarIcon } from 'lucide-react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+}
+
 export const FeaturedProducts = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -73,7 +90,13 @@ export const FeaturedProducts = () => {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12"
+        >
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             Popular Equipment
           </h2>
@@ -81,11 +104,20 @@ export const FeaturedProducts = () => {
             Our most requested audio gear, available for daily, weekly, or
             monthly rental.
           </p>
-        </div>
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex flex-wrap justify-center gap-4 mb-12"
+        >
           {categories.map((category) => (
-            <button
+            <motion.button
               key={category}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedCategory(category)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 selectedCategory === category 
@@ -94,24 +126,35 @@ export const FeaturedProducts = () => {
               }`}
             >
               {category}
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
         
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <motion.div 
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
             {filteredProducts.map((product) => (
-              <div
+              <motion.div
                 key={product._id || product.key}
+                variants={item}
                 className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100"
               >
-                <div className="aspect-w-1 aspect-h-1">
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                  className="aspect-w-1 aspect-h-1"
+                >
                   <img
                     src={product.image && product.image.length > 0 ? product.image[0] : 'https://via.placeholder.com/300x200?text=No+Image'}
                     alt={product.name}
                     className="w-full h-48 object-cover"
                   />
-                </div>
+                </motion.div>
                 <div className="p-6">
                   <div className="text-sm text-indigo-600 font-medium mb-1">
                     {product.category}
@@ -139,28 +182,47 @@ export const FeaturedProducts = () => {
                       </span>
                       <span className="text-sm text-gray-500">/day</span>
                     </div>
-                    <Link 
-                      to={"/product/" + (product.key)} 
-                      className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-300"
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      <span>Rent Now</span>
-                    </Link>
+                      <Link 
+                        to={"/product/" + (product.key)} 
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-300"
+                      >
+                        <span>Rent Now</span>
+                      </Link>
+                    </motion.div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         ) : (
-          <div className="text-center py-8">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-8"
+          >
             <p className="text-gray-600">No products available in this category.</p>
-          </div>
+          </motion.div>
         )}
         
-        <div className="mt-12 text-center">
-          <button className="px-8 py-3 border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 rounded-md font-medium">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-12 text-center"
+        >
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-3 border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 rounded-md font-medium"
+          >
             View All Equipment
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   )

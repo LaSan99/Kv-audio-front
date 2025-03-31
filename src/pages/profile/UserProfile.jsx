@@ -3,6 +3,7 @@ import { FaUser, FaPhone, FaMapMarkerAlt, FaEdit, FaQuestionCircle } from 'react
 import BookingCard from './BookingCard';
 import InquiryCard from './InquiryCard';
 import axios from 'axios';
+import Loader from '../../components/Loader';
 
 export default function UserProfile() {
     const [profile, setProfile] = useState(null);
@@ -97,7 +98,7 @@ export default function UserProfile() {
         }
     };
 
-    if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    if (loading) return <Loader size="medium" />;
     if (error) return <div className="text-red-600 text-center p-8">{error}</div>;
     if (!profile) return <div className="text-center p-8">No profile data found</div>;
 

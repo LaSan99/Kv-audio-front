@@ -5,6 +5,7 @@ import ImageSlider from "../../components/imageSlider";
 import { addToCart, loadCart } from "../../utils/cart";
 import toast from "react-hot-toast";
 import { FaShoppingCart, FaRuler, FaTag, FaMoneyBillWave, FaCalculator } from "react-icons/fa";
+import Loader from "../../components/Loader";
 
 export default function ProductOverview() {
 	const params = useParams();
@@ -52,10 +53,7 @@ export default function ProductOverview() {
 	return (
 		<div className="w-full min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-20 px-4">
 			{loadingStatus === "loading" && (
-				<div className="w-full h-[60vh] flex flex-col justify-center items-center">
-					<div className="w-16 h-16 border-4 border-purple-500 border-t-transparent animate-spin rounded-full"></div>
-					<p className="mt-4 text-gray-600 font-medium animate-pulse">Loading product details...</p>
-				</div>
+				<Loader size="medium" />
 			)}
 			{loadingStatus === "loaded" && (
 				<div className="container mx-auto">

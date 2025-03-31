@@ -1,6 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { Quote } from 'lucide-react'
 import axios from 'axios'
+import { motion } from 'framer-motion'
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+}
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+}
 
 export const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([])
@@ -59,7 +75,13 @@ export const Testimonials = () => {
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             What Our Customers Say
           </h2>
@@ -67,23 +89,41 @@ export const Testimonials = () => {
             Don't just take our word for it. Here's what professionals and event
             organizers have to say about our rental service.
           </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        </motion.div>
+
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
           {Array.isArray(testimonials) && testimonials.length > 0 ? (
             testimonials.map((testimonial) => (
-              <div
+              <motion.div
                 key={testimonial._id}
+                variants={item}
+                whileHover={{ y: -5 }}
                 className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 relative"
               >
-                <div className="absolute top-4 left-4 text-indigo-200">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute top-4 left-4 text-indigo-200"
+                >
                   <Quote className="h-12 w-12" />
-                </div>
+                </motion.div>
                 <div className="pt-8">
                   <p className="text-gray-600 mb-6 relative z-10">
                     {testimonial.comment}
                   </p>
-                  <div className="flex items-center">
-                    <img
+                  <motion.div 
+                    whileHover={{ x: 5 }}
+                    className="flex items-center"
+                  >
+                    <motion.img
+                      whileHover={{ scale: 1.1 }}
                       src={testimonial.profilePicture}
                       alt={testimonial.name}
                       className="h-12 w-12 rounded-full object-cover mr-4"
@@ -96,17 +136,28 @@ export const Testimonials = () => {
                         {new Date(testimonial.date).toLocaleDateString()}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             ))
           ) : (
-            <div className="col-span-3 text-center text-gray-500">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="col-span-3 text-center text-gray-500"
+            >
               No reviews available yet
-            </div>
+            </motion.div>
           )}
-        </div>
-        <div className="mt-16 text-center bg-indigo-600 rounded-lg p-8 text-white">
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="mt-16 text-center bg-indigo-600 rounded-lg p-8 text-white"
+        >
           <h3 className="text-2xl font-bold mb-4">
             Join Our Satisfied Customers
           </h3>
@@ -114,10 +165,14 @@ export const Testimonials = () => {
             Experience the convenience and quality of our audio equipment rental
             service for your next event or project.
           </p>
-          <button className="px-8 py-3 bg-white text-indigo-600 hover:bg-gray-100 rounded-md font-medium">
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-3 bg-white text-indigo-600 hover:bg-gray-100 rounded-md font-medium"
+          >
             Get Started Today
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   )

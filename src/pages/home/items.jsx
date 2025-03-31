@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import ProductCard from "../../components/productCard"
 import { FaSearch } from "react-icons/fa"
+import Loader from "../../components/Loader"
 
 export default function Items() {
   const [state, setState] = useState("loading")
@@ -70,13 +71,7 @@ export default function Items() {
 
       {/* Loading State */}
       {state === "loading" && (
-        <div className="flex justify-center items-center min-h-[400px]">
-          <div className="relative">
-            <div className="w-12 h-12 border-4 border-blue-200 rounded-full animate-spin"></div>
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
-          </div>
-          <p className="ml-4 text-gray-600">Loading products...</p>
-        </div>
+        <Loader size="medium" />
       )}
 
       {/* Error State */}
